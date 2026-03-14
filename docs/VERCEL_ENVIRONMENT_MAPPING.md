@@ -13,6 +13,7 @@
 | `NEXT_PUBLIC_SUPABASE_URL` | Required | Required | Required | Public client URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Required | Required | Required | Public anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Required (server only) | Required (server only) | Required (server only) | Never expose in client code |
+| `NEXT_PUBLIC_APP_URL` | Optional | Required | Required | Base URL for auth email redirect (set to Vercel URL) |
 | `E2E_SUPABASE_TEST_EMAIL` | Optional | Optional | Not required | QA automation only |
 | `E2E_SUPABASE_TEST_PASSWORD` | Optional | Optional | Not required | QA automation only |
 

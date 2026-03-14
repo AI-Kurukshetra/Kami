@@ -4,6 +4,7 @@ export type HealthCheck = {
   service: string;
   status: HealthStatus;
   timestampIso: string;
+  warnings?: string[];
 };
 
 export type Profile = {

@@ -13,6 +13,7 @@ type Mode = 'signin' | 'signup';
 const phonePattern = /^\+?[1-9]\d{9,14}$/;
 const namePattern = /^[a-zA-Z][a-zA-Z '\-]*$/;
 const specialCharacterPattern = /[^A-Za-z0-9]/;
+const configuredAppUrl = process.env.NEXT_PUBLIC_APP_URL?.trim().replace(/\/+$/, '');
 
 export default function AuthPage() {
   const router = useRouter();
@@ -95,11 +96,14 @@ export default function AuthPage() {
         const trimmedLastName = lastName.trim();
         const trimmedPhoneNumber = normalizePhoneNumber(phoneNumber);
         const trimmedEmail = email.trim();
+        const fallbackOrigin = window.location.origin.replace(/\/+$/, '');
+        const emailRedirectTo = `${configuredAppUrl || fallbackOrigin}/auth`;
 
         const { data, error } = await supabase.auth.signUp({
           email: trimmedEmail,
           password,
           options: {
+            emailRedirectTo,
             data: {
               first_name: trimmedFirstName,
               last_name: trimmedLastName,

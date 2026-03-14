@@ -43,9 +43,16 @@ npm run dev
 - Open `/profiles` and verify profile list/create behavior
 
 ## Vercel Setup
-Set the same 3 variables in Vercel for:
+Set these variables in Vercel for:
 - Preview environment
 - Production environment
+- `NEXT_PUBLIC_APP_URL` must match your Vercel deployment URL (for auth confirmation redirect)
+
+In Supabase Dashboard:
+- Auth -> URL Configuration -> `Site URL`: set to your production Vercel URL
+- Auth -> URL Configuration -> `Redirect URLs`: add:
+  - `https://<your-production-domain>/auth`
+  - `https://<your-preview-domain>/auth` (optional for previews)
 
 Reference: `docs/VERCEL_ENVIRONMENT_MAPPING.md`
 

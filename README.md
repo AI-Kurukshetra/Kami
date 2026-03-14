@@ -25,6 +25,7 @@ Required env values:
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY` (server-side API only)
+- `NEXT_PUBLIC_APP_URL` (Vercel URL used for auth email redirects)
 
 Supabase setup checklist:
 - `docs/SUPABASE_SETUP.md`
