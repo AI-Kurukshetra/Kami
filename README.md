@@ -8,7 +8,7 @@ Web-first MVP using Next.js, Node.js patterns, Supabase, and Vercel deployment.
 - Supabase migrations and seed data in `supabase`
 - Supabase Auth pages: `/auth` and protected `/workspace`
 - Public landing page: `/`
-- Core modules: `/profiles` CRUD, `/documents` collaborative documents, `/notifications` inbox
+- Core modules: `/profiles` settings + password change, `/documents` collaborative documents, `/notifications` inbox
 - Document collaboration extras: role-based sharing (`owner/editor/viewer`) and activity timeline
 
 ## Quick Start

@@ -4,11 +4,38 @@
   --ink: #152238;
   --muted: #52617c;
   --surface: rgba(255, 255, 255, 0.86);
+  --surface-strong: #ffffff;
   --line: #d6e3ff;
   --brand: #155eef;
   --brand-dark: #0f4bd1;
   --ok: #0f7b4b;
   --err: #b42318;
+  --card-shadow: 0 18px 40px rgba(21, 34, 56, 0.08);
+  --focus-ring: rgba(21, 94, 239, 0.18);
+  --danger-a: #d92d20;
+  --danger-b: #b42318;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg1: #0a1220;
+    --bg2: #0d1728;
+    --ink: #e7edf8;
+    --muted: #9fb0ce;
+    --surface: rgba(19, 31, 50, 0.84);
+    --surface-strong: #16243a;
+    --line: #274163;
+    --brand: #5f9dff;
+    --brand-dark: #3f83f8;
+    --ok: #34d399;
+    --err: #ff8b7f;
+    --card-shadow: 0 18px 38px rgba(4, 9, 18, 0.55);
+    --focus-ring: rgba(95, 157, 255, 0.24);
+    --danger-a: #ff6b5f;
+    --danger-b: #e0473a;
+    color-scheme: dark;
+  }
 }
 
 * {
@@ -34,7 +61,7 @@ body {
   z-index: 20;
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.78);
+  background: color-mix(in oklab, var(--surface-strong) 78%, transparent);
 }
 
 .topNavInner {
@@ -72,7 +99,7 @@ body {
 .topNavLinks a:hover {
   color: var(--ink);
   border-color: var(--line);
-  background: #fff;
+  background: var(--surface-strong);
 }
 
 .navLinkWithBadge {
@@ -110,7 +137,7 @@ body {
   padding: 20px;
   background: var(--surface);
   backdrop-filter: blur(6px);
-  box-shadow: 0 18px 40px rgba(21, 34, 56, 0.08);
+  box-shadow: var(--card-shadow);
 }
 
 .hero {
@@ -226,7 +253,7 @@ h1 {
   width: 38px;
   height: 38px;
   border-radius: 12px;
-  background: linear-gradient(130deg, #155eef, #0f4bd1);
+  background: linear-gradient(130deg, var(--brand), var(--brand-dark));
   color: #fff;
   font-size: 0.76rem;
   font-weight: 800;
@@ -250,7 +277,7 @@ h1 {
   border: 1px dashed var(--line);
   border-radius: 12px;
   padding: 10px 8px;
-  background: #fff;
+  background: var(--surface-strong);
 }
 
 .impactGrid {
@@ -280,7 +307,7 @@ h1 {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 6px 10px;
-  background: #fff;
+  background: var(--surface-strong);
   color: var(--muted);
   font-size: 0.8rem;
   font-weight: 600;
@@ -356,7 +383,7 @@ input {
   padding: 10px 12px;
   font-size: 0.95rem;
   color: var(--ink);
-  background: #fff;
+  background: var(--surface-strong);
 }
 
 textarea,
@@ -367,18 +394,18 @@ select {
   padding: 10px 12px;
   font-size: 0.95rem;
   color: var(--ink);
-  background: #fff;
+  background: var(--surface-strong);
 }
 
 input:focus {
   border-color: var(--brand);
-  outline: 2px solid rgba(21, 94, 239, 0.18);
+  outline: 2px solid var(--focus-ring);
 }
 
 textarea:focus,
 select:focus {
   border-color: var(--brand);
-  outline: 2px solid rgba(21, 94, 239, 0.18);
+  outline: 2px solid var(--focus-ring);
 }
 
 button {
@@ -420,7 +447,7 @@ li {
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 12px;
-  background: #fff;
+  background: var(--surface-strong);
 }
 
 .notificationItem {
@@ -459,7 +486,7 @@ li {
   padding: 2px 8px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--surface-strong);
   color: var(--ink);
   font-size: 0.78rem;
   font-weight: 700;
@@ -511,7 +538,7 @@ li {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 8px 12px;
-  background: #fff;
+  background: var(--surface-strong);
   color: var(--muted);
   font-size: 0.85rem;
 }
@@ -530,7 +557,7 @@ li {
 }
 
 .buttonLink.secondary {
-  background: #fff;
+  background: var(--surface-strong);
   color: var(--ink);
   border: 1px solid var(--line);
 }
@@ -575,13 +602,13 @@ li {
 }
 
 .secondaryButton {
-  background: #fff;
+  background: var(--surface-strong);
   color: var(--ink);
   border: 1px solid var(--line);
 }
 
 .dangerButton {
-  background: linear-gradient(120deg, #d92d20, #b42318);
+  background: linear-gradient(120deg, var(--danger-a), var(--danger-b));
 }
 
 .editWrap {
