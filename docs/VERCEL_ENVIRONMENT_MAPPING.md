@@ -4,6 +4,7 @@
 - Web app root: `apps/web`
 - Preview deployments: automatic on pull requests
 - Production deployments: manual only after preview signoff
+- Vercel project setting: set Root Directory to repository root and use existing scripts (`npm run build`, `npm run dev`)
 
 ## Environment Matrix
 
@@ -12,6 +13,8 @@
 | `NEXT_PUBLIC_SUPABASE_URL` | Required | Required | Required | Public client URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Required | Required | Required | Public anon key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Required (server only) | Required (server only) | Required (server only) | Never expose in client code |
+| `E2E_SUPABASE_TEST_EMAIL` | Optional | Optional | Not required | QA automation only |
+| `E2E_SUPABASE_TEST_PASSWORD` | Optional | Optional | Not required | QA automation only |
 
 ## Setup Steps
 1. Link project to Vercel:
@@ -35,3 +38,5 @@
 - Do not set service-role key with `NEXT_PUBLIC_` prefix.
 - Rotate keys immediately if exposed.
 - Keep preview and production values isolated.
+- Keep preview/QA accounts separate from production accounts.
+- If any secret was committed in git history, rotate keys before production deployment.

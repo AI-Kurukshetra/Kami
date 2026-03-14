@@ -5,6 +5,8 @@
 - [ ] Migrations reviewed and rollback approach documented
 - [ ] Non-production DB reset + seed verified
 - [ ] RTM and affected test docs updated
+- [ ] Secrets scan completed (`.env.example` contains placeholders only)
+- [ ] Supabase keys rotated if any prior key exposure occurred
 
 ## 2) Quality Gate (Required)
 Run:
@@ -16,6 +18,7 @@ npm run build
 ```
 - [ ] All commands pass
 - [ ] No critical/high unresolved defects
+- [ ] Delete confirmations + toast feedback verified on destructive UI actions
 
 ## 3) Preview Validation (Required)
 - [ ] Open Vercel preview URL from latest commit
@@ -37,6 +40,7 @@ vercel deploy --prod
 - [ ] Verify auth login and signout
 - [ ] Verify core data flow against production-safe records
 - [ ] Confirm monitoring/logs show no critical errors
+- [ ] Verify `/integrations` redirects to `/workspace` (temporarily hidden feature)
 
 ## 6) Rollback Rules
 - Roll back immediately for auth failures, data corruption risk, or severe outage.
