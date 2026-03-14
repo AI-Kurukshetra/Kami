@@ -18,6 +18,7 @@ import type {
 } from '@kami/shared';
 
 import { tryCreateSupabaseBrowserClient } from '@/lib/supabase/browser';
+import { showToast } from '@/lib/toast';
 
 type DocumentForm = {
   title: string;
@@ -504,6 +505,15 @@ export default function DocumentDetailPage() {
   async function handleDelete() {
     if (!canDelete) {
       setErrorMessage('Only owners can delete documents.');
+      showToast('warning', 'Only owners can delete documents.');
+      return;
+    }
+
+    const confirmed = window.confirm(
+      'Delete this document permanently? This action cannot be undone.'
+    );
+    if (!confirmed) {
+      showToast('warning', 'Document deletion cancelled.');
       return;
     }
 
@@ -520,9 +530,12 @@ export default function DocumentDetailPage() {
         throw new Error(error.message || 'Unable to delete document');
       }
 
+      showToast('success', 'Document deleted successfully.');
       router.push('/documents');
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Unable to delete document');
+      const message = error instanceof Error ? error.message : 'Unable to delete document';
+      setErrorMessage(message);
+      showToast('error', message);
     }
   }
 
@@ -564,6 +577,13 @@ export default function DocumentDetailPage() {
   async function handleRemoveShare(userId: string) {
     if (!canShare) {
       setErrorMessage('Only owners can manage collaborators.');
+      showToast('warning', 'Only owners can manage collaborators.');
+      return;
+    }
+
+    const confirmed = window.confirm('Remove this collaborator from the document?');
+    if (!confirmed) {
+      showToast('warning', 'Collaborator removal cancelled.');
       return;
     }
 
@@ -581,10 +601,13 @@ export default function DocumentDetailPage() {
       }
 
       setMessage('Collaborator removed.');
+      showToast('success', 'Collaborator removed successfully.');
       await loadShares();
       await loadActivity();
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Unable to remove collaborator');
+      const message = error instanceof Error ? error.message : 'Unable to remove collaborator';
+      setErrorMessage(message);
+      showToast('error', message);
     }
   }
 
@@ -710,6 +733,13 @@ export default function DocumentDetailPage() {
   async function handleDeleteAnnotation(annotationId: string) {
     if (!canEdit) {
       setErrorMessage('You do not have permission to delete annotations.');
+      showToast('warning', 'You do not have permission to delete annotations.');
+      return;
+    }
+
+    const confirmed = window.confirm('Delete this annotation?');
+    if (!confirmed) {
+      showToast('warning', 'Annotation deletion cancelled.');
       return;
     }
 
@@ -725,10 +755,13 @@ export default function DocumentDetailPage() {
       }
 
       setMessage('Annotation deleted.');
+      showToast('success', 'Annotation deleted successfully.');
       await loadAnnotations();
       await loadActivity();
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Unable to delete annotation');
+      const message = error instanceof Error ? error.message : 'Unable to delete annotation';
+      setErrorMessage(message);
+      showToast('error', message);
     }
   }
 
@@ -803,6 +836,12 @@ export default function DocumentDetailPage() {
   }
 
   async function handleDeleteComment(commentId: string) {
+    const confirmed = window.confirm('Delete this comment?');
+    if (!confirmed) {
+      showToast('warning', 'Comment deletion cancelled.');
+      return;
+    }
+
     try {
       const response = await authedFetch(`/api/documents/${documentId}/comments/${commentId}`, {
         method: 'DELETE'
@@ -814,10 +853,13 @@ export default function DocumentDetailPage() {
       }
 
       setMessage('Comment deleted.');
+      showToast('success', 'Comment deleted successfully.');
       await loadComments();
       await loadActivity();
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Unable to delete comment');
+      const message = error instanceof Error ? error.message : 'Unable to delete comment';
+      setErrorMessage(message);
+      showToast('error', message);
     }
   }
 

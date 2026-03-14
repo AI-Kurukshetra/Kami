@@ -50,7 +50,7 @@ body {
   padding: 0;
   min-height: 100%;
   color: var(--ink);
-  font-family: var(--font-brand), 'Segoe UI', sans-serif;
+  font-family: 'Avenir Next', Montserrat, 'Segoe UI', sans-serif;
   background:
     radial-gradient(circle at 8% 10%, rgba(112, 188, 255, 0.26) 0%, transparent 40%),
     radial-gradient(circle at 84% 16%, rgba(255, 176, 103, 0.2) 0%, transparent 34%),
@@ -591,6 +591,40 @@ li {
   text-transform: uppercase;
 }
 
+.toastViewport {
+  position: fixed;
+  top: 84px;
+  right: 16px;
+  z-index: 60;
+  display: grid;
+  gap: 10px;
+  width: min(360px, calc(100vw - 24px));
+}
+
+.toast {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: var(--surface-strong);
+  color: var(--ink);
+  box-shadow: var(--card-shadow);
+  font-size: 0.9rem;
+  font-weight: 600;
+  animation: rise 180ms ease-out;
+}
+
+.toast-success {
+  border-left: 4px solid var(--ok);
+}
+
+.toast-error {
+  border-left: 4px solid var(--err);
+}
+
+.toast-warning {
+  border-left: 4px solid var(--accent);
+}
+
 @media (max-width: 860px) {
   .landingHeroModern {
     grid-template-columns: 1fr;
@@ -829,6 +863,13 @@ li {
 
   .profileFieldGrid {
     grid-template-columns: 1fr;
+  }
+
+  .toastViewport {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
   }
 }
 

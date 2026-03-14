@@ -115,6 +115,20 @@ Use fields: `Test ID`, `Requirement ID`, `Priority`, `Type`, `Preconditions`, `S
 - Steps: Open list/detail screens with UTF-8 data
 - Expected: Text renders correctly; no encoding artifacts
 
+### SMK-013 Signup Validation Baseline
+- Requirement ID: `REQ-018`
+- Type: Boundary
+- Preconditions: None
+- Steps: Open signup, submit password without special character and spaced phone format
+- Expected: Password validation blocks weak password; phone with spaces is accepted when normalized
+
+### SMK-014 Delete Confirmation + Toast Feedback
+- Requirement ID: `REQ-019`
+- Type: Positive/Negative
+- Preconditions: Existing deletable document/comment/annotation/collaborator
+- Steps: Trigger delete; cancel once, confirm once
+- Expected: Cancel shows warning toast and keeps data; confirm deletes data and shows success toast; API failure shows error toast
+
 ## Execution Cadence
 - Every PR preview sanity check (subset: SMK-001..SMK-006)
 - Full smoke before manual production deployment

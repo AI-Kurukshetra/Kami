@@ -69,6 +69,13 @@ Validate interactions across Next.js frontend, Node.js server logic, Supabase se
 - Boundary: environment-specific feature flags toggle safely
 - Globalization: locale-related env settings do not break rendering
 
+### INT-008 Delete Route Enforcement + UI Feedback Mapping
+- Requirement ID: `REQ-019`
+- Positive: confirmed delete request reaches API and persists deletion in DB
+- Negative: denied/failed delete returns controlled API error and surfaces as error toast
+- Boundary: sequential delete operations preserve consistent UI state and API responses
+- Globalization: server error messages with UTF-8 text map correctly to toast UI
+
 ## Test Data & Setup
 - Reset and seed before execution:
 ```bash

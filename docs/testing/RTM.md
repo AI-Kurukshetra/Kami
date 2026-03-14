@@ -30,6 +30,8 @@ Provide end-to-end mapping from MVP requirements to test coverage across smoke, 
 | REQ-015 | API/DB data consistency | High | N/A | RGN-003 | INT-002 | Yes | Yes | Yes | Yes | QA | Planned |
 | REQ-016 | Migration compatibility with current app build | High | N/A | RGN-003 | INT-005 | Yes | Yes | Yes | Yes | QA | Planned |
 | REQ-017 | Vercel environment consistency (preview/prod) | High | SMK-001 | RGN-008 | INT-007 | Yes | Yes | Yes | Yes | QA | Planned |
+| REQ-018 | Signup/profile validation policy (8+ uppercase/lowercase/digit/special and normalized phone) | High | SMK-013 | RGN-001, RGN-002 | INT-001, INT-002 | Yes | Yes | Yes | Yes | QA | Planned |
+| REQ-019 | Delete confirmation + toast feedback (success/error/warning) | High | SMK-014 | RGN-009 | INT-008 | Yes | Yes | Yes | Yes | QA | Planned |
 
 ## RTM Maintenance Rules
 1. Update RTM whenever requirement scope, test cases, or risk changes.

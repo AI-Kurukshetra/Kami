@@ -53,7 +53,6 @@ export function TopNavLinks() {
       <Link href="/documents">Documents</Link>
       <Link href="/classrooms">Classrooms</Link>
       <Link href="/assignments">Assignments</Link>
-      <Link href="/integrations">Integrations</Link>
       <NotificationsLink />
       <Link href="/workspace">Workspace</Link>
     </nav>

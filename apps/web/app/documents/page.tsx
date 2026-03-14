@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import type { ApiError, Document, DocumentAccessRole, DocumentStatus } from '@kami/shared';
 
 import { tryCreateSupabaseBrowserClient } from '@/lib/supabase/browser';
+import { showToast } from '@/lib/toast';
 
 type DocumentsResponse = {
   items: Document[];
@@ -253,6 +254,14 @@ export default function DocumentsPage() {
   }
 
   async function deleteDocument(documentId: string) {
+    const confirmed = window.confirm(
+      'Delete this document permanently? This action cannot be undone.'
+    );
+    if (!confirmed) {
+      showToast('warning', 'Document deletion cancelled.');
+      return;
+    }
+
     setMessage('');
     setErrorMessage('');
 
@@ -267,9 +276,12 @@ export default function DocumentsPage() {
       }
 
       setMessage('Document deleted.');
+      showToast('success', 'Document deleted successfully.');
       await loadDocuments();
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Unable to delete document');
+      const message = error instanceof Error ? error.message : 'Unable to delete document';
+      setErrorMessage(message);
+      showToast('error', message);
     }
   }
 

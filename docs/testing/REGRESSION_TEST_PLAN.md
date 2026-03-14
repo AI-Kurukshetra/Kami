@@ -82,6 +82,13 @@ For each requirement include:
 - Boundary: 320px width and ultra-wide desktop
 - Globalization: text expansion does not break critical CTAs
 
+### RGN-009 Destructive Action Safeguards + Toast UX
+- Requirement ID: `REQ-019`
+- Positive: delete confirmation shown before destructive action, success toast shown after deletion
+- Negative: cancel path keeps record and shows warning toast; failed delete shows error toast
+- Boundary: repeated rapid delete attempts do not bypass confirmation flow
+- Globalization: toast/error strings remain readable with long/UTF-8 content
+
 ## Execution Cadence
 - Full run for release candidates
 - Targeted regression for hotfixes (mapped by impacted requirements)

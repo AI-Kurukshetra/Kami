@@ -2,14 +2,9 @@ import './globals.css';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { Manrope } from 'next/font/google';
 
 import { TopNavLinks } from '@/components/top-nav-links';
-
-const manrope = Manrope({
-  subsets: ['latin'],
-  variable: '--font-brand'
-});
+import { ToastViewport } from '@/components/toast-viewport';
 
 export const metadata: Metadata = {
   title: 'Kami MVP',
@@ -23,7 +18,7 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={manrope.variable} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <header className="topNav">
           <div className="topNavInner">
             <Link href="/" className="brandLink">
@@ -33,6 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </div>
         </header>
         {children}
+        <ToastViewport />
       </body>
     </html>
   );

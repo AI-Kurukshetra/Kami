@@ -2,6 +2,7 @@
 
 ## Completed (Web MVP)
 - Supabase Auth sign in/sign up/session handling
+- Signup flow expanded with `firstName`, `lastName`, `phoneNumber` and strong password validation
 - Profiles settings with ownership checks (`firstName`, `lastName`, `email`, `phoneNumber`)
 - Password change from authenticated profile security section
 - Documents CRUD with ownership checks
@@ -18,9 +19,10 @@
 - Document text export endpoint (`/api/documents/:id/export`)
 - Search API foundation (`/api/search`)
 - Classroom and assignment API + page foundations (`/api/classrooms`, `/api/assignments`, `/classrooms`, `/assignments`)
-- Integration settings API + page foundation (`/api/integrations`, `/integrations`)
+- Integration settings API foundation (`/api/integrations`)
 - Notification type coverage expanded (`document_updated`, `assignment_assigned`, `comment_mentioned`, `comment_reply`)
 - In-app notifications inbox for share/unshare/update/assignment/comment events
+- Delete-action confirmation flow across document modules with toast feedback (success/error/warning)
 - Responsive UI pages for profile, documents, workspace, notifications
 - Migration + seed workflow for repeatable non-prod setup
 - Vercel-ready environment/docs baseline
@@ -28,6 +30,7 @@
 
 ## Deferred (Post-MVP / Lower Priority)
 - React Native mobile implementation in `apps/mobile`
+- Integrations UI page (`/integrations`) is temporarily hidden and redirects to `/workspace`
 - Push/email notification channels
 - Rich text editor and full CRDT presence/cursor collaboration
 - Document version history
