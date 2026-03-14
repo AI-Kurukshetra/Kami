@@ -204,7 +204,7 @@ export default function AuthPage() {
     <main className="page authPage">
       <section className="card authCard">
         <p className="kicker">Kami Auth</p>
-        <h1>{mode === 'signin' ? 'Sign in' : 'Create account'}</h1>
+        <h1>{mode === 'signin' ? 'Signin' : 'Signup'}</h1>
         <p className="subtitle">Use your Supabase credentials to access the workspace.</p>
 
         <form onSubmit={handleSubmit} className="form">
@@ -277,7 +277,7 @@ export default function AuthPage() {
           </label>
 
           <button disabled={isSubmitting} type="submit">
-            {isSubmitting ? 'Please wait...' : mode === 'signin' ? 'Sign in' : 'Sign up'}
+            {isSubmitting ? 'Please wait...' : mode === 'signin' ? 'Signin' : 'Signup'}
           </button>
         </form>
 
@@ -290,7 +290,7 @@ export default function AuthPage() {
             onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
             type="button"
           >
-            {mode === 'signin' ? 'Need an account? Sign up' : 'Already have an account? Sign in'}
+            {mode === 'signin' ? 'Need an account? Signup' : 'Already have an account? Signin'}
           </button>
         </div>
 
