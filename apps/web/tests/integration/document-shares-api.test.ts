@@ -5,6 +5,8 @@ const hoisted = vi.hoisted(() => ({
   mockFrom: vi.fn(),
   mockCreateSupabaseServerClient: vi.fn(),
   mockGetRequestUserId: vi.fn(),
+  adminGetUserByIdQueue: [] as Array<{ data: { user: { email?: string } | null } | null; error: { code?: string } | null }>,
+  adminListUsersQueue: [] as Array<{ data: { users: Array<{ id: string; email?: string }> }; error: { code?: string } | null }>,
   documentSelectQueue: [] as Array<{ data: unknown; error: { code?: string } | null }>,
   collaboratorSelectQueue: [] as Array<{ data: unknown; error: { code?: string } | null }>,
   collaboratorListQueue: [] as Array<{ data: unknown; error: { code?: string } | null }>,
@@ -102,11 +104,19 @@ beforeEach(() => {
   hoisted.collaboratorListQueue = [];
   hoisted.collaboratorUpsertQueue = [];
   hoisted.collaboratorDeleteQueue = [];
+  hoisted.adminGetUserByIdQueue = [];
+  hoisted.adminListUsersQueue = [];
 
   setupFromMock();
 
   hoisted.mockCreateSupabaseServerClient.mockReturnValue({
-    from: hoisted.mockFrom
+    from: hoisted.mockFrom,
+    auth: {
+      admin: {
+        getUserById: vi.fn().mockImplementation(() => shiftOrThrow(hoisted.adminGetUserByIdQueue, 'auth.admin.getUserById')),
+        listUsers: vi.fn().mockImplementation(() => shiftOrThrow(hoisted.adminListUsersQueue, 'auth.admin.listUsers'))
+      }
+    }
   });
 });
 
@@ -127,6 +137,10 @@ describe('document shares api integration', () => {
       ],
       error: null
     });
+    hoisted.adminGetUserByIdQueue.push({
+      data: { user: { email: 'collab@kami.app' } },
+      error: null
+    });
 
     const request = new NextRequest(`http://localhost/api/documents/${DOC_ID}/shares`);
     const response = await GET_SHARES(request, { params: Promise.resolve({ id: DOC_ID }) });
@@ -138,6 +152,7 @@ describe('document shares api integration', () => {
         {
           documentId: DOC_ID,
           userId: COLLAB_ID,
+          email: 'collab@kami.app',
           role: 'viewer',
           createdAt: '2026-03-14T00:00:00.000Z'
         }
@@ -163,6 +178,11 @@ describe('document shares api integration', () => {
   });
 
   it('POST /shares blocks owner self-sharing', async () => {
+    hoisted.documentSelectQueue.push({
+      data: { id: DOC_ID, owner_id: OWNER_ID },
+      error: null
+    });
+
     const request = new NextRequest(`http://localhost/api/documents/${DOC_ID}/shares`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -193,6 +213,10 @@ describe('document shares api integration', () => {
       },
       error: null
     });
+    hoisted.adminGetUserByIdQueue.push({
+      data: { user: { email: 'collab@kami.app' } },
+      error: null
+    });
 
     const request = new NextRequest(`http://localhost/api/documents/${DOC_ID}/shares`, {
       method: 'POST',
@@ -207,6 +231,7 @@ describe('document shares api integration', () => {
     expect(payload).toEqual({
       documentId: DOC_ID,
       userId: COLLAB_ID,
+      email: 'collab@kami.app',
       role: 'editor',
       createdAt: '2026-03-14T00:00:00.000Z'
     });

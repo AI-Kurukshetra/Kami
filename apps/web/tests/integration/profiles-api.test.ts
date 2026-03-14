@@ -23,6 +23,9 @@ type DbRow = {
   id: string;
   email: string;
   display_name: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
   created_at: string;
 };
 
@@ -59,6 +62,9 @@ describe('profiles api integration', () => {
           id: 'p_1',
           email: 'demo@kami.app',
           display_name: 'Demo User',
+          first_name: 'Demo',
+          last_name: 'User',
+          phone_number: '+14155550100',
           created_at: '2026-03-14T00:00:00.000Z'
         }
       ],
@@ -76,6 +82,9 @@ describe('profiles api integration', () => {
           id: 'p_1',
           email: 'demo@kami.app',
           displayName: 'Demo User',
+          firstName: 'Demo',
+          lastName: 'User',
+          phoneNumber: '+14155550100',
           createdAt: '2026-03-14T00:00:00.000Z'
         }
       ]
@@ -102,7 +111,7 @@ describe('profiles api integration', () => {
   it('POST returns 400 for invalid payload (negative)', async () => {
     const request = new NextRequest('http://localhost/api/profiles', {
       method: 'POST',
-      body: JSON.stringify({ email: 'not-an-email', displayName: 'A' }),
+      body: JSON.stringify({ email: 'not-an-email', firstName: 'A', lastName: 'B', phoneNumber: '123' }),
       headers: { 'content-type': 'application/json' }
     });
 
@@ -131,14 +140,19 @@ describe('profiles api integration', () => {
     });
   });
 
-  it('POST accepts boundary display name length = 80', async () => {
-    const maxName = 'N'.repeat(80);
+  it('POST accepts boundary first/last name length = 60', async () => {
+    const firstName = 'N'.repeat(60);
+    const lastName = 'S'.repeat(60);
+    const displayName = `${firstName} ${lastName}`;
 
     setupPostChain({
       data: {
         id: 'p_2',
         email: 'max@kami.app',
-        display_name: maxName,
+        display_name: displayName,
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: '+14155550123',
         created_at: '2026-03-14T01:00:00.000Z'
       },
       error: null
@@ -146,7 +160,12 @@ describe('profiles api integration', () => {
 
     const request = new NextRequest('http://localhost/api/profiles', {
       method: 'POST',
-      body: JSON.stringify({ email: 'max@kami.app', displayName: maxName }),
+      body: JSON.stringify({
+        email: 'max@kami.app',
+        firstName,
+        lastName,
+        phoneNumber: '+14155550123'
+      }),
       headers: { 'content-type': 'application/json' }
     });
 
@@ -157,7 +176,10 @@ describe('profiles api integration', () => {
     expect(payload).toEqual({
       id: 'p_2',
       email: 'max@kami.app',
-      displayName: maxName,
+      displayName,
+      firstName,
+      lastName,
+      phoneNumber: '+14155550123',
       createdAt: '2026-03-14T01:00:00.000Z'
     });
   });
@@ -170,7 +192,12 @@ describe('profiles api integration', () => {
 
     const request = new NextRequest('http://localhost/api/profiles', {
       method: 'POST',
-      body: JSON.stringify({ email: 'demo@kami.app', displayName: 'Demo User' }),
+      body: JSON.stringify({
+        email: 'demo@kami.app',
+        firstName: 'Demo',
+        lastName: 'User',
+        phoneNumber: '+14155550100'
+      }),
       headers: { 'content-type': 'application/json' }
     });
 
@@ -192,7 +219,12 @@ describe('profiles api integration', () => {
 
     const request = new NextRequest('http://localhost/api/profiles', {
       method: 'POST',
-      body: JSON.stringify({ email: 'new@kami.app', displayName: 'New User' }),
+      body: JSON.stringify({
+        email: 'new@kami.app',
+        firstName: 'New',
+        lastName: 'User',
+        phoneNumber: '+14155550101'
+      }),
       headers: { 'content-type': 'application/json' }
     });
 
