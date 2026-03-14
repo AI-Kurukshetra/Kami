@@ -1,24 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-import type {
-  ApiError,
-  CreateDocumentInput,
-  Document,
-  DocumentAccessRole,
-  DocumentStatus
-} from '@kami/shared';
+import type { ApiError, Document, DocumentAccessRole, DocumentStatus } from '@kami/shared';
 
 import { getRequestUserId } from '@/lib/auth-user';
-import { appendDocumentActivity } from '@/lib/document-activity';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
-const documentStatusSchema = z.enum(['draft', 'published']);
-
-const createDocumentSchema = z.object({
-  title: z.string().trim().min(2).max(120),
-  content: z.string().trim().min(1).max(10_000),
-  status: documentStatusSchema
+const querySchema = z.object({
+  q: z.string().trim().min(2).max(100)
 });
 
 type DbDocument = {
@@ -36,6 +25,11 @@ type DbCollaborator = {
   role: 'editor' | 'viewer';
 };
 
+function errorResponse(status: number, code: string, message: string) {
+  const error: ApiError = { code, message };
+  return NextResponse.json(error, { status });
+}
+
 function mapDocument(row: DbDocument, accessRole: DocumentAccessRole): Document {
   return {
     id: row.id,
@@ -48,16 +42,21 @@ function mapDocument(row: DbDocument, accessRole: DocumentAccessRole): Document 
   };
 }
 
-function errorResponse(status: number, code: string, message: string) {
-  const error: ApiError = { code, message };
-  return NextResponse.json(error, { status });
-}
-
 export async function GET(request: NextRequest) {
   const userId = await getRequestUserId(request);
 
   if (!userId) {
     return errorResponse(401, 'unauthorized', 'Authentication required');
+  }
+
+  let q: string;
+  try {
+    const parsed = querySchema.parse({
+      q: request.nextUrl.searchParams.get('q') ?? ''
+    });
+    q = parsed.q.toLowerCase();
+  } catch {
+    return errorResponse(400, 'invalid_query', 'Search query must be between 2 and 100 characters');
   }
 
   const supabase = createSupabaseServerClient();
@@ -68,12 +67,12 @@ export async function GET(request: NextRequest) {
       .select('id,owner_id,title,content,status,created_at,updated_at')
       .eq('owner_id', userId)
       .order('updated_at', { ascending: false })
-      .limit(50),
+      .limit(100),
     supabase.from('document_collaborators').select('document_id,role').eq('user_id', userId)
   ]);
 
   if (ownedResponse.error || sharedLinksResponse.error) {
-    return errorResponse(500, 'documents_fetch_failed', 'Unable to fetch documents');
+    return errorResponse(500, 'search_failed', 'Unable to perform search');
   }
 
   const ownedRows = (ownedResponse.data ?? []) as DbDocument[];
@@ -82,7 +81,6 @@ export async function GET(request: NextRequest) {
   let sharedRows: DbDocument[] = [];
   if (sharedLinks.length > 0) {
     const sharedIds = sharedLinks.map((row) => row.document_id);
-
     const sharedResponse = await supabase
       .from('documents')
       .select('id,owner_id,title,content,status,created_at,updated_at')
@@ -90,14 +88,13 @@ export async function GET(request: NextRequest) {
       .order('updated_at', { ascending: false });
 
     if (sharedResponse.error) {
-      return errorResponse(500, 'documents_fetch_failed', 'Unable to fetch documents');
+      return errorResponse(500, 'search_failed', 'Unable to perform search');
     }
 
     sharedRows = (sharedResponse.data ?? []) as DbDocument[];
   }
 
   const sharedRoleByDocumentId = new Map(sharedLinks.map((row) => [row.document_id, row.role]));
-
   const mergedMap = new Map<string, Document>();
 
   for (const row of ownedRows) {
@@ -106,59 +103,18 @@ export async function GET(request: NextRequest) {
 
   for (const row of sharedRows) {
     if (!mergedMap.has(row.id)) {
-      const role = sharedRoleByDocumentId.get(row.id) ?? 'viewer';
-      mergedMap.set(row.id, mapDocument(row, role));
+      mergedMap.set(row.id, mapDocument(row, sharedRoleByDocumentId.get(row.id) ?? 'viewer'));
     }
   }
 
-  const items = [...mergedMap.values()].sort((a, b) =>
-    b.updatedAt.localeCompare(a.updatedAt)
-  );
-
-  return NextResponse.json({ items }, { status: 200 });
-}
-
-export async function POST(request: NextRequest) {
-  const userId = await getRequestUserId(request);
-
-  if (!userId) {
-    return errorResponse(401, 'unauthorized', 'Authentication required');
-  }
-
-  let body: CreateDocumentInput;
-
-  try {
-    body = createDocumentSchema.parse(await request.json());
-  } catch {
-    return errorResponse(400, 'invalid_payload', 'Invalid request payload');
-  }
-
-  const supabase = createSupabaseServerClient();
-
-  const { data, error } = await supabase
-    .from('documents')
-    .insert({
-      owner_id: userId,
-      title: body.title.trim(),
-      content: body.content.trim(),
-      status: body.status
+  const items = [...mergedMap.values()]
+    .filter((item) => {
+      const title = item.title.toLowerCase();
+      const content = item.content.toLowerCase();
+      return title.includes(q) || content.includes(q);
     })
-    .select('id,owner_id,title,content,status,created_at,updated_at')
-    .single();
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    .slice(0, 50);
 
-  if (error) {
-    return errorResponse(500, 'document_create_failed', 'Unable to create document');
-  }
-
-  await appendDocumentActivity({
-    documentId: (data as DbDocument).id,
-    actorUserId: userId,
-    action: 'created',
-    metadata: {
-      status: (data as DbDocument).status
-    },
-    supabase
-  }).catch(() => undefined);
-
-  return NextResponse.json(mapDocument(data as DbDocument, 'owner'), { status: 201 });
+  return NextResponse.json({ items, query: q }, { status: 200 });
 }

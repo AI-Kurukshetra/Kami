@@ -8,7 +8,13 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
 type DbNotification = {
   id: string;
   user_id: string;
-  type: 'document_shared' | 'document_unshared';
+  type:
+    | 'document_shared'
+    | 'document_unshared'
+    | 'document_updated'
+    | 'assignment_assigned'
+    | 'comment_mentioned'
+    | 'comment_reply';
   title: string;
   body: string;
   metadata: Record<string, unknown> | null;

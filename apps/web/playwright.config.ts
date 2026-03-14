@@ -19,7 +19,7 @@ export default defineConfig({
     trace: 'on-first-retry'
   },
   webServer: {
-    command: 'npm run dev -- --port 3005',
+    command: 'rm -f .next/dev/lock && npm run dev -- --port 3005',
     port: 3005,
     reuseExistingServer: true,
     timeout: 120_000,

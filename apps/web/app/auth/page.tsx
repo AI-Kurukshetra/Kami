@@ -17,6 +17,22 @@ export default function AuthPage() {
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  function signupPasswordError(text: string) {
+    if (text.length < 8) {
+      return 'Password must be at least 8 characters.';
+    }
+    if (!/[A-Z]/.test(text)) {
+      return 'Password must include at least one uppercase letter.';
+    }
+    if (!/[a-z]/.test(text)) {
+      return 'Password must include at least one lowercase letter.';
+    }
+    if (!/\d/.test(text)) {
+      return 'Password must include at least one number.';
+    }
+    return '';
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
@@ -31,6 +47,11 @@ export default function AuthPage() {
       }
 
       if (mode === 'signup') {
+        const validationError = signupPasswordError(password);
+        if (validationError) {
+          throw new Error(validationError);
+        }
+
         const { error } = await supabase.auth.signUp({ email, password });
 
         if (error) {
@@ -80,8 +101,8 @@ export default function AuthPage() {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="At least 6 characters"
-              minLength={6}
+              placeholder={mode === 'signup' ? 'At least 8 chars, upper/lower/number' : 'Your password'}
+              minLength={mode === 'signup' ? 8 : 6}
               required
             />
           </label>

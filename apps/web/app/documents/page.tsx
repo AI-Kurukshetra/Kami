@@ -44,6 +44,9 @@ export default function DocumentsPage() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [importStatus, setImportStatus] = useState<DocumentStatus>('draft');
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -164,6 +167,43 @@ export default function DocumentsPage() {
       setErrorMessage(error instanceof Error ? error.message : 'Unable to create document');
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+  async function importDocument(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setMessage('');
+    setErrorMessage('');
+
+    if (!importFile) {
+      setErrorMessage('Select a file to import.');
+      return;
+    }
+
+    setIsImporting(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', importFile);
+      formData.append('status', importStatus);
+
+      const response = await authedFetch('/api/documents/import', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const error = (await response.json()) as ApiError;
+        throw new Error(error.message || 'Unable to import document');
+      }
+
+      setImportFile(null);
+      setImportStatus('draft');
+      setMessage('Document imported successfully.');
+      await loadDocuments();
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Unable to import document');
+    } finally {
+      setIsImporting(false);
     }
   }
 
@@ -352,6 +392,40 @@ export default function DocumentsPage() {
 
           {message ? <p className="success">{message}</p> : null}
           {errorMessage ? <p className="error">{errorMessage}</p> : null}
+        </article>
+
+        <article className="card">
+          <h2>Import file to document</h2>
+          <p className="meta">Upload a supported file and create a document automatically.</p>
+          <form onSubmit={importDocument} className="form">
+            <label>
+              File
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg,.webp,.txt"
+                onChange={(event) => {
+                  const nextFile = event.target.files?.[0] ?? null;
+                  setImportFile(nextFile);
+                }}
+                required
+              />
+            </label>
+
+            <label>
+              Initial Status
+              <select
+                value={importStatus}
+                onChange={(event) => setImportStatus(event.target.value as DocumentStatus)}
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </label>
+
+            <button disabled={isImporting} type="submit">
+              {isImporting ? 'Importing...' : 'Import file'}
+            </button>
+          </form>
         </article>
 
         <article className="card">

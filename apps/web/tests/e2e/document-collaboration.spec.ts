@@ -116,25 +116,27 @@ test.describe('document collaboration roles e2e', () => {
     await page.getByRole('button', { name: 'Create document' }).click();
 
     const ownerDocItem = page.locator('li', { hasText: docTitle }).first();
-    await expect(ownerDocItem.getByText('owner')).toBeVisible();
+    await expect(ownerDocItem.locator('.rolePill', { hasText: 'owner' })).toBeVisible();
 
     await ownerDocItem.getByRole('link', { name: docTitle }).click();
     await expect(page.getByText('Access role:')).toBeVisible();
-    await expect(page.getByText('owner')).toBeVisible();
+    await expect(
+      page.locator('p.meta', { hasText: 'Access role:' }).locator('.rolePill', { hasText: 'owner' })
+    ).toBeVisible();
 
     const detailUrl = page.url();
     documentId = detailUrl.split('/documents/')[1]?.split('?')[0] ?? '';
 
-    await page.getByLabel('User ID').fill(editorId);
+    await page.getByLabel('Collaborator Email').fill(editorEmail);
     await page.getByLabel('Role').selectOption('editor');
     await page.getByRole('button', { name: 'Add or update collaborator' }).click();
     await expect(page.getByText('Collaborator saved.')).toBeVisible();
-    await expect(page.getByText(`User: ${editorId}`)).toBeVisible();
+    await expect(page.getByText(`Email: ${editorEmail}`)).toBeVisible();
 
-    await page.getByLabel('User ID').fill(viewerId);
+    await page.getByLabel('Collaborator Email').fill(viewerEmail);
     await page.getByLabel('Role').selectOption('viewer');
     await page.getByRole('button', { name: 'Add or update collaborator' }).click();
-    await expect(page.getByText(`User: ${viewerId}`)).toBeVisible();
+    await expect(page.getByText(`Email: ${viewerEmail}`)).toBeVisible();
 
     await signOutViaWorkspace(page);
 
@@ -142,17 +144,19 @@ test.describe('document collaboration roles e2e', () => {
     await page.goto('/documents');
 
     const editorDocItem = page.locator('li', { hasText: docTitle }).first();
-    await expect(editorDocItem.getByText('editor')).toBeVisible();
+    await expect(editorDocItem.locator('.rolePill', { hasText: 'editor' })).toBeVisible();
     await expect(editorDocItem.getByRole('button', { name: 'Edit' })).toBeVisible();
     await expect(editorDocItem.getByRole('button', { name: 'Delete' })).toHaveCount(0);
 
     await editorDocItem.getByRole('link', { name: docTitle }).click();
     await expect(page.getByText('Access role:')).toBeVisible();
-    await expect(page.getByText('editor')).toBeVisible();
+    await expect(
+      page.locator('p.meta', { hasText: 'Access role:' }).locator('.rolePill', { hasText: 'editor' })
+    ).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Collaborators' })).toHaveCount(0);
 
-    await page.getByLabel('Title').fill(editorTitle);
-    await page.getByLabel('Content').fill(editorContent);
+    await page.getByLabel('Title').first().fill(editorTitle);
+    await page.locator('textarea[rows="12"]').first().fill(editorContent);
     await page.getByRole('button', { name: 'Save' }).click();
     await expect(page.getByText('Document saved successfully.')).toBeVisible();
 
@@ -162,17 +166,19 @@ test.describe('document collaboration roles e2e', () => {
     await page.goto('/documents');
 
     const viewerDocItem = page.locator('li', { hasText: editorTitle }).first();
-    await expect(viewerDocItem.getByText('viewer')).toBeVisible();
+    await expect(viewerDocItem.locator('.rolePill', { hasText: 'viewer' })).toBeVisible();
     await expect(viewerDocItem.getByRole('button', { name: 'Edit' })).toHaveCount(0);
     await expect(viewerDocItem.getByRole('button', { name: 'Delete' })).toHaveCount(0);
 
     await viewerDocItem.getByRole('link', { name: editorTitle }).click();
     await expect(page.getByText('Access role:')).toBeVisible();
-    await expect(page.getByText('viewer')).toBeVisible();
+    await expect(
+      page.locator('p.meta', { hasText: 'Access role:' }).locator('.rolePill', { hasText: 'viewer' })
+    ).toBeVisible();
     await expect(page.getByRole('button', { name: 'Save' })).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'Delete' })).toHaveCount(0);
-    await expect(page.getByLabel('Title')).toBeDisabled();
-    await expect(page.getByLabel('Content')).toBeDisabled();
-    await expect(page.getByLabel('Status')).toBeDisabled();
+    await expect(page.getByLabel('Title').first()).toBeDisabled();
+    await expect(page.locator('textarea[rows="12"]').first()).toBeDisabled();
+    await expect(page.getByLabel('Status').first()).toBeDisabled();
   });
 });

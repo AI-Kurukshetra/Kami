@@ -11,6 +11,7 @@ import type {
 
 import { getRequestUserId } from '@/lib/auth-user';
 import { appendDocumentActivity } from '@/lib/document-activity';
+import { createUserNotification } from '@/lib/notifications';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 const idSchema = z.object({
@@ -20,8 +21,8 @@ const idSchema = z.object({
 const documentStatusSchema = z.enum(['draft', 'published']);
 
 const updateDocumentSchema = z.object({
-  title: z.string().min(2).max(120),
-  content: z.string().max(10_000),
+  title: z.string().trim().min(2).max(120),
+  content: z.string().trim().min(1).max(10_000),
   status: documentStatusSchema
 });
 
@@ -36,6 +37,7 @@ type DbDocument = {
 };
 
 type DbCollaborator = {
+  user_id?: string;
   role: 'editor' | 'viewer';
 };
 
@@ -168,8 +170,8 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
     const { data, error } = await supabase
       .from('documents')
       .update({
-        title: body.title,
-        content: body.content,
+        title: body.title.trim(),
+        content: body.content.trim(),
         status: body.status
       })
       .eq('id', documentId)
@@ -194,6 +196,31 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
       },
       supabase
     }).catch(() => undefined);
+
+    const collaborators = await supabase
+      .from('document_collaborators')
+      .select('user_id')
+      .eq('document_id', documentId);
+
+    if (!collaborators.error) {
+      for (const item of (collaborators.data ?? []) as DbCollaborator[]) {
+        if (!item.user_id) {
+          continue;
+        }
+
+        await createUserNotification({
+          userId: item.user_id,
+          type: 'document_updated',
+          title: 'Document updated',
+          body: `A shared document was updated: ${body.title.trim()}`,
+          metadata: {
+            documentId,
+            status: body.status
+          },
+          supabase
+        }).catch(() => undefined);
+      }
+    }
 
     return NextResponse.json(mapDocument(data as DbDocument, result.accessRole), { status: 200 });
   } catch {
