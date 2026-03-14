@@ -41,7 +41,7 @@ export function TopNavLinks() {
     return (
       <nav className="topNavLinks" aria-label="Primary Navigation">
         <Link href="/">Home</Link>
-        <Link href="/auth">Auth</Link>
+        <Link href="/auth">Sign in / Sign up</Link>
       </nav>
     );
   }
