@@ -148,10 +148,46 @@ export default function AuthPage() {
             : 'Account created. Check your email if confirmation is required, then sign in to complete setup.'
         );
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+        const signInResult = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+        const { data, error } = signInResult;
 
         if (error) {
           throw error;
+        }
+
+        if (!data.user?.email_confirmed_at) {
+          await supabase.auth.signOut();
+          throw new Error('Please confirm your email before signing in.');
+        }
+
+        const trimmedFirstName = typeof data.user.user_metadata?.first_name === 'string' ? data.user.user_metadata.first_name.trim() : '';
+        const trimmedLastName = typeof data.user.user_metadata?.last_name === 'string' ? data.user.user_metadata.last_name.trim() : '';
+        const metadataPhoneRaw = typeof data.user.user_metadata?.phone_number === 'string' ? data.user.user_metadata.phone_number : '';
+        const trimmedPhoneNumber = normalizePhoneNumber(metadataPhoneRaw);
+        const trimmedEmail = (data.user.email || email).trim();
+
+        if (data.session?.access_token && trimmedFirstName && trimmedLastName && phonePattern.test(trimmedPhoneNumber)) {
+          const profileResponse = await fetch('/api/profiles', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${data.session.access_token}`
+            },
+            body: JSON.stringify({
+              firstName: trimmedFirstName,
+              lastName: trimmedLastName,
+              email: trimmedEmail,
+              phoneNumber: trimmedPhoneNumber
+            })
+          });
+
+          if (!profileResponse.ok) {
+            const payload = (await profileResponse.json().catch(() => null)) as ApiError | null;
+
+            if (payload?.code !== 'profile_exists') {
+              throw new Error(payload?.message || 'Signed in, but profile setup failed.');
+            }
+          }
         }
 
         router.push('/workspace');

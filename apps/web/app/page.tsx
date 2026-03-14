@@ -101,9 +101,6 @@ export default function LandingPage() {
           <article key={feature.title} className="card featureCard">
             <h2>{feature.title}</h2>
             <p className="meta">{feature.description}</p>
-            <Link className="inlineLink" href="/auth">
-              Learn more
-            </Link>
           </article>
         ))}
       </section>
