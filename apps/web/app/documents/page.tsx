@@ -444,7 +444,7 @@ export default function DocumentsPage() {
           <h2>Recent documents</h2>
           <div className="filterRow">
             <input
-              placeholder="Search by title/content"
+              placeholder="Search"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
             />

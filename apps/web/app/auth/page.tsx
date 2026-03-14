@@ -216,7 +216,7 @@ export default function AuthPage() {
                   type="text"
                   value={firstName}
                   onChange={(event) => setFirstName(event.target.value)}
-                  placeholder="Abhishek"
+                  placeholder="First Name"
                   minLength={2}
                   maxLength={60}
                   pattern="^[a-zA-Z][a-zA-Z '-]*$"
@@ -230,7 +230,7 @@ export default function AuthPage() {
                   type="text"
                   value={lastName}
                   onChange={(event) => setLastName(event.target.value)}
-                  placeholder="Dave"
+                  placeholder="Last Name"
                   minLength={2}
                   maxLength={60}
                   pattern="^[a-zA-Z][a-zA-Z '-]*$"
@@ -244,7 +244,7 @@ export default function AuthPage() {
                   type="tel"
                   value={phoneNumber}
                   onChange={(event) => setPhoneNumber(event.target.value)}
-                  placeholder="+1 555 123 4567"
+                  placeholder="Phone Number"
                   pattern="^\\+?[0-9()\\s-]{10,20}$"
                   inputMode="tel"
                   required
@@ -259,7 +259,7 @@ export default function AuthPage() {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="name@example.com"
+              placeholder="Email"
               required
             />
           </label>
@@ -270,7 +270,7 @@ export default function AuthPage() {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder={mode === 'signup' ? 'At least 8 chars, upper/lower/number/special' : 'Your password'}
+              placeholder="Password"
               minLength={8}
               required
             />

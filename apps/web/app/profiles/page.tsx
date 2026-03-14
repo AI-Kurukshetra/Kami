@@ -381,7 +381,7 @@ export default function ProfilesPage() {
                     onChange={(event) =>
                       setForm((prev) => ({ ...prev, phoneNumber: event.target.value }))
                     }
-                    placeholder="+1 555 123 4567"
+                    placeholder="Phone Number"
                     pattern="\\+?[0-9()\\s-]{10,20}"
                     inputMode="tel"
                     required

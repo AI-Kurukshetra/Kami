@@ -1140,7 +1140,7 @@ export default function DocumentDetailPage() {
                 onChange={(event) =>
                   setShareForm((prev) => ({ ...prev, email: event.target.value.trim() }))
                 }
-                placeholder="name@example.com"
+                placeholder="Collaborator Email"
                 required
                 type="email"
               />
@@ -1333,7 +1333,7 @@ export default function DocumentDetailPage() {
                 onChange={(event) =>
                   setAnnotationForm((prev) => ({ ...prev, anchorLabel: event.target.value }))
                 }
-                placeholder="e.g., Paragraph 2 / Page 1"
+                placeholder="Anchor Label"
               />
             </label>
 
@@ -1420,7 +1420,7 @@ export default function DocumentDetailPage() {
               onChange={(event) =>
                 setCommentForm((prev) => ({ ...prev, mentionEmailsText: event.target.value }))
               }
-              placeholder="alice@example.com, bob@example.com"
+              placeholder="Mention Emails"
             />
           </label>
 
