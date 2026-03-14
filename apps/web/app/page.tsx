@@ -4,123 +4,130 @@ import { AuthActions } from '@/components/auth-actions';
 
 const productHighlights = [
   {
-    icon: 'IL',
-    title: 'Interactive Learning',
+    title: 'Annotate with purpose',
     description:
-      'Turn any document into an active learning space with annotation, collaboration, and guided review.'
+      'Turn worksheets, PDFs, and reading material into interactive lessons with comments, highlights, and guided tasks.'
   },
   {
-    icon: 'UA',
-    title: 'Universal Accessibility',
+    title: 'Collaborate in context',
     description:
-      'Built for diverse learners with flexible workflows that support language, reading, and confidence.'
+      'Share documents with teacher, editor, or viewer access so every contributor knows exactly what they can do.'
   },
   {
-    icon: 'AI',
-    title: 'Actionable Insights',
+    title: 'Manage classrooms faster',
     description:
-      'Give teachers and leaders clear signals from student activity and progress in one platform.'
+      'Organize classrooms, assignments, and notifications in one workspace built for speed and clarity.'
   }
 ];
 
-const trustPills = [
-  'Trusted classroom workflows',
-  'Secure role-based access',
-  'Fast onboarding for teams',
-  'Built for MVP scale'
+const outcomes = [
+  {
+    value: '94%',
+    label: 'higher engagement reported by pilot educators'
+  },
+  {
+    value: '7.8h',
+    label: 'weekly admin time saved through shared workflows'
+  },
+  {
+    value: '<2m',
+    label: 'to create and share a classroom-ready document'
+  }
 ];
 
 export default function LandingPage() {
   return (
     <main className="page landingPage">
-      <section className="hero card landingHero">
-        <p className="kicker">Kami Platform</p>
-        <h1>Elevate instruction and collaboration in one elegant workspace</h1>
-        <p className="subtitle">
-          A modern learning and productivity platform designed to make resources interactive, accessible, and
-          measurable across your organization.
-        </p>
-
-        <div className="heroActions">
-          <AuthActions />
-          <Link className="buttonLink" href="/documents">
-            Try the Workspace
-          </Link>
-          <Link className="buttonLink secondary" href="/documents">
-            See Documents
-          </Link>
-          <Link className="buttonLink secondary" href="/profiles">
-            Open Profiles
-          </Link>
-        </div>
-
-      </section>
-
-      <section className="trustStrip card">
-        {trustPills.map((item) => (
-          <p key={item} className="trustItem">
-            {item}
+      <section className="landingHeroModern">
+        <div className="heroCopy card">
+          <p className="kicker">Kami Platform</p>
+          <h1>Make learning materials truly interactive</h1>
+          <p className="subtitle">
+            Build a digital classroom experience where teachers can annotate, assign, and collaborate around every
+            document in one elegant workflow.
           </p>
-        ))}
+          <div className="heroActions">
+            <AuthActions />
+            <Link className="buttonLink secondary" href="/auth">
+              Explore the Platform
+            </Link>
+          </div>
+        </div>
+        <aside className="card heroPanel">
+          <p className="meta">Live Classroom Snapshot</p>
+          <h2>Ready for instruction</h2>
+          <div className="heroPanelGrid">
+            <div>
+              <p className="meta">Shared docs</p>
+              <p className="panelValue">128</p>
+            </div>
+            <div>
+              <p className="meta">Active collaborators</p>
+              <p className="panelValue">43</p>
+            </div>
+            <div>
+              <p className="meta">Unread updates</p>
+              <p className="panelValue">9</p>
+            </div>
+            <div>
+              <p className="meta">Assignments this week</p>
+              <p className="panelValue">26</p>
+            </div>
+          </div>
+        </aside>
       </section>
 
-      <section className="impactGrid">
-        <article className="card impactCard">
-          <p className="meta">Engagement Lift</p>
-          <h2>94%</h2>
-          <p className="meta">Teachers report stronger student participation.</p>
-        </article>
-        <article className="card impactCard">
-          <p className="meta">Time Saved</p>
-          <h2>7.8 hrs</h2>
-          <p className="meta">Average weekly time reclaimed through digital workflows.</p>
-        </article>
-        <article className="card impactCard">
-          <p className="meta">Adoption Ready</p>
-          <h2>Fast</h2>
-          <p className="meta">Designed for rollout across teams and institutions.</p>
-        </article>
+      <section className="brandStrip card">
+        <p className="meta">Designed for schools, tutoring teams, and training organizations.</p>
+        <div className="brandPills">
+          <span>Classroom Ready</span>
+          <span>Role Secure</span>
+          <span>Mobile Responsive</span>
+          <span>Vercel Deployed</span>
+        </div>
+      </section>
+
+      <section className="outcomeGrid">
+        {outcomes.map((item) => (
+          <article key={item.value} className="card impactCard">
+            <h2>{item.value}</h2>
+            <p className="meta">{item.label}</p>
+          </article>
+        ))}
       </section>
 
       <section className="featureGrid">
         {productHighlights.map((feature) => (
           <article key={feature.title} className="card featureCard">
-            <span className="featureIcon">{feature.icon}</span>
             <h2>{feature.title}</h2>
             <p className="meta">{feature.description}</p>
-            <Link className="inlineLink" href="/documents">
+            <Link className="inlineLink" href="/auth">
               Learn more
             </Link>
           </article>
         ))}
       </section>
 
-      <section className="card workflowCard">
-        <h2>One platform, real impact</h2>
+      <section className="card workflowCardModern">
+        <h2>From static files to active learning in four steps</h2>
         <div className="workflowList">
           <p>
-            <strong>1.</strong> Start from existing files and turn static content into interactive resources.
+            <strong>1.</strong> Upload or import class materials in seconds.
           </p>
           <p>
-            <strong>2.</strong> Share instantly with role controls for owners, editors, and viewers.
+            <strong>2.</strong> Add annotations, comments, and assignment context.
           </p>
           <p>
-            <strong>3.</strong> Track collaboration with activity timelines and smart notifications.
+            <strong>3.</strong> Share with secure owner/editor/viewer permissions.
           </p>
           <p>
-            <strong>4.</strong> Scale confidently with secure backend architecture and deployment-ready tooling.
+            <strong>4.</strong> Track updates and responses from one workspace.
           </p>
         </div>
 
         <div className="heroActions">
           <Link className="buttonLink" href="/auth">
             Start for Free
-          </Link>
-          <Link className="buttonLink secondary" href="/workspace">
-            Go to Workspace
-          </Link>
-          <Link className="buttonLink secondary" href="/notifications">
-            Open Notification Inbox
           </Link>
         </div>
       </section>
