@@ -18,9 +18,10 @@ const createProfileSchema = z.object({
     .max(60)
     .regex(/^[a-zA-Z][a-zA-Z '\\-]*$/, 'Last name can only contain letters and valid separators'),
   email: z.string().email(),
-  phoneNumber: z
-    .string()
-    .regex(/^\+?[1-9]\d{9,14}$/, 'Phone number must be in valid international format')
+  phoneNumber: z.preprocess(
+    (value) => (typeof value === 'string' ? value.replace(/[\s()-]/g, '').trim() : value),
+    z.string().regex(/^\+?[1-9]\d{9,14}$/, 'Phone number must be in valid international format')
+  )
 });
 
 type DbProfile = {

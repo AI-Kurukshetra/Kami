@@ -22,8 +22,8 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body className={manrope.variable}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={manrope.variable} suppressHydrationWarning>
         <header className="topNav">
           <div className="topNavInner">
             <Link href="/" className="brandLink">

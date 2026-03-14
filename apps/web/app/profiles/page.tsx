@@ -38,6 +38,11 @@ const initialPasswordForm: PasswordForm = {
 
 const phonePattern = /^\+?[1-9]\d{9,14}$/;
 const namePattern = /^[a-zA-Z][a-zA-Z '\-]*$/;
+const specialCharacterPattern = /[^A-Za-z0-9]/;
+
+function normalizePhoneNumber(text: string) {
+  return text.replace(/[\s()-]/g, '').trim();
+}
 
 export default function ProfilesPage() {
   const router = useRouter();
@@ -170,8 +175,8 @@ export default function ProfilesPage() {
       return 'Enter a valid email address.';
     }
 
-    if (!phonePattern.test(form.phoneNumber.trim())) {
-      return 'Phone number must be in valid international format (example: +15551234567).';
+    if (!phonePattern.test(normalizePhoneNumber(form.phoneNumber))) {
+      return 'Phone number must be in valid international format (example: +1 555 123 4567).';
     }
 
     return '';
@@ -192,6 +197,10 @@ export default function ProfilesPage() {
 
     if (!/\d/.test(passwordForm.newPassword)) {
       return 'Password must include at least one number.';
+    }
+
+    if (!specialCharacterPattern.test(passwordForm.newPassword)) {
+      return 'Password must include at least one special character.';
     }
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
@@ -218,7 +227,7 @@ export default function ProfilesPage() {
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
         email: form.email.trim(),
-        phoneNumber: form.phoneNumber.trim()
+        phoneNumber: normalizePhoneNumber(form.phoneNumber)
       };
 
       if (profileId) {
@@ -372,8 +381,9 @@ export default function ProfilesPage() {
                     onChange={(event) =>
                       setForm((prev) => ({ ...prev, phoneNumber: event.target.value }))
                     }
-                    placeholder="+15551234567"
-                    pattern="\\+?[1-9][0-9]{9,14}"
+                    placeholder="+1 555 123 4567"
+                    pattern="\\+?[0-9()\\s-]{10,20}"
+                    inputMode="tel"
                     required
                   />
                 </label>
