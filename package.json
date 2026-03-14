@@ -1,0 +1,22 @@
+{
+  "name": "kami-mvp",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace apps/web",
+    "build": "npm run build --workspace apps/web",
+    "lint": "npm run lint --workspace apps/web",
+    "test": "npm run test --workspace apps/web",
+    "typecheck": "npm run typecheck --workspace apps/web",
+    "db:start": "npx supabase start",
+    "db:reset": "npx supabase db reset",
+    "db:push": "npx supabase db push"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
