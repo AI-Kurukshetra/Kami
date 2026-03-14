@@ -27,14 +27,14 @@ Scope: close major gaps from `docs/BLUEPRINT_COMPLIANCE_MATRIX.md` and move towa
 | Epic | Priority | Owner | Effort | Target Date | Dependencies | Status |
 |---|---|---|---|---|---|---|
 | E1: File Upload & Storage | P0 | Full-stack | 8 pd | Mar 21, 2026 | None | Done |
-| E2: PDF Render + Document Import | P0 | Frontend | 10 pd | Mar 27, 2026 | E1 | In Progress (import + preview base done) |
-| E3: Annotation Data Model + APIs | P0 | Full-stack | 10 pd | Apr 03, 2026 | E2 | In Progress (base CRUD delivered) |
-| E4: Annotation Tooling UI | P0 | Frontend | 12 pd | Apr 10, 2026 | E3 | In Progress (selection + quick actions base delivered) |
-| E5: Realtime Collaboration | P0 | Full-stack | 14 pd | Apr 17, 2026 | E3 | In Progress (live refresh baseline delivered) |
-| E6: Comment Threads + Mentions | P0 | Full-stack | 10 pd | Apr 24, 2026 | E5 | In Progress (threaded + mentions base delivered) |
-| E7: Classroom Management | P1 | Full-stack | 10 pd | May 01, 2026 | Auth/Profile stable | In Progress (API foundation delivered) |
-| E8: Assignment Distribution | P1 | Full-stack | 8 pd | May 05, 2026 | E7 | In Progress (API foundation delivered) |
-| E9: Export/Print + Search API | P1 | Full-stack | 8 pd | May 08, 2026 | E3 | In Progress |
+| E2: PDF Render + Document Import | P0 | Frontend | 10 pd | Mar 27, 2026 | E1 | Done |
+| E3: Annotation Data Model + APIs | P0 | Full-stack | 10 pd | Apr 03, 2026 | E2 | Done |
+| E4: Annotation Tooling UI | P0 | Frontend | 12 pd | Apr 10, 2026 | E3 | Done |
+| E5: Realtime Collaboration | P0 | Full-stack | 14 pd | Apr 17, 2026 | E3 | In Progress (live refresh; full CRDT presence pending) |
+| E6: Comment Threads + Mentions | P0 | Full-stack | 10 pd | Apr 24, 2026 | E5 | Done |
+| E7: Classroom Management | P1 | Full-stack | 10 pd | May 01, 2026 | Auth/Profile stable | In Progress (API + basic UI delivered) |
+| E8: Assignment Distribution | P1 | Full-stack | 8 pd | May 05, 2026 | E7 | In Progress (API + basic UI delivered) |
+| E9: Export/Print + Search API | P1 | Full-stack | 8 pd | May 08, 2026 | E3 | In Progress (search + txt export delivered; print/pdf export pending) |
 | E10: Validation Hardening + QA Pack | P0 | QA + Full-stack | 10 pd | May 08, 2026 | E1-E9 | Planned |
 
 ## Validation & Quality Gates

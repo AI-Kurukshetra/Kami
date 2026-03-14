@@ -11,6 +11,7 @@ Web-first MVP using Next.js, Node.js patterns, Supabase, and Vercel deployment.
 - Core modules: `/profiles` settings + password change, `/documents` collaborative documents, `/notifications` inbox
 - Document collaboration extras: role-based sharing (`owner/editor/viewer`), activity timeline, realtime refresh, document file uploads/import, and annotation APIs
 - Foundations added: `/api/classrooms`, `/api/assignments`, `/api/integrations`, `/api/search`
+- Pages added: `/classrooms`, `/assignments`, `/integrations`
 
 ## Quick Start
 ```bash

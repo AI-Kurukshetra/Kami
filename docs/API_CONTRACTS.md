@@ -139,7 +139,7 @@ Error format is:
 ### `GET /api/notifications`
 - Auth: Yes
 - Response `200`: `{ items: UserNotification[], unreadCount }`
-- Types: `document_shared`, `document_unshared`, `document_updated`, `assignment_assigned`
+- Types: `document_shared`, `document_unshared`, `document_updated`, `assignment_assigned`, `comment_mentioned`, `comment_reply`
 
 ### `PATCH /api/notifications/:id/read`
 - Auth: Yes (owner)

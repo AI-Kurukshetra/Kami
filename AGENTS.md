@@ -11,6 +11,7 @@ Kami MVP uses Next.js + Node.js + Supabase, deployed on Vercel. React Native is 
 ## Build, Test, and Development Commands
 - `npm install`: install workspace dependencies
 - `npm run dev --workspace apps/web`: run local web app
+- `npm run db:start`: start local Supabase stack
 - `npm run lint`: run ESLint checks
 - `npm run typecheck`: run TypeScript checks
 - `npm run test`: run integration/smoke tests (Vitest)
@@ -31,6 +32,11 @@ UI must be product-focused, attractive, and mobile responsive.
 - Maintain consistent spacing, typography hierarchy, and accessible contrast
 - Logged-out users: Home + Auth only
 - Logged-in users: access Profiles, Documents, Notifications, Workspace
+
+## Required Skills, Rules, and Tools
+- Core skills: Next.js App Router, TypeScript, Supabase Auth/RLS, SQL migrations, API validation with `zod`
+- Rules: migration-first DB changes, strict auth/ownership checks, no service-role key in client code, reseed non-prod resets
+- Tools: Supabase CLI (`npx supabase ...`), ESLint, TypeScript checker, Vitest/Playwright, Vercel env management
 
 ## Database, Security & Environment Rules
 Use migration-first database changes; do not patch schema manually in production.

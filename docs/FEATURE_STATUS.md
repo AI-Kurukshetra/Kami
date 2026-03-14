@@ -17,10 +17,10 @@
 - Threaded comments with mentions and reply notifications
 - Document text export endpoint (`/api/documents/:id/export`)
 - Search API foundation (`/api/search`)
-- Classroom and assignment API foundations (`/api/classrooms`, `/api/assignments`)
-- Integration settings API foundation (`/api/integrations`)
-- Notification type coverage expanded (`document_updated`, `assignment_assigned`)
-- In-app notifications inbox for share/unshare events
+- Classroom and assignment API + page foundations (`/api/classrooms`, `/api/assignments`, `/classrooms`, `/assignments`)
+- Integration settings API + page foundation (`/api/integrations`, `/integrations`)
+- Notification type coverage expanded (`document_updated`, `assignment_assigned`, `comment_mentioned`, `comment_reply`)
+- In-app notifications inbox for share/unshare/update/assignment/comment events
 - Responsive UI pages for profile, documents, workspace, notifications
 - Migration + seed workflow for repeatable non-prod setup
 - Vercel-ready environment/docs baseline
