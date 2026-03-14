@@ -11,7 +11,7 @@ test.describe('authenticated smoke e2e', () => {
 
     await page.getByLabel('Email').fill(testEmail!);
     await page.getByLabel('Password').fill(testPassword!);
-    await page.getByRole('button', { name: 'Sign in' }).click();
+    await page.getByRole('button', { name: /signin/i }).click();
 
     await expect(page).toHaveURL(/\/workspace/);
     await expect(page.getByRole('heading', { name: /Welcome/ })).toBeVisible();
